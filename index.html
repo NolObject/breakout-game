@@ -7,7 +7,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  background: #0a0a1a;
+  background: #020008;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,9 +34,9 @@ body {
   font-size: 16px;
 }
 
-#hud span b { color: #7df9ff; }
+#hud span b { color: #ff00ff; text-shadow: 0 0 8px #ff00ff; }
 
-canvas { display: block; background: #05050f; border-radius: 4px; }
+canvas { display: block; background: #030010; border-radius: 4px; }
 
 #overlay {
   display: none;
@@ -54,9 +54,9 @@ canvas { display: block; background: #05050f; border-radius: 4px; }
 
 #overlay h1 {
   font-size: 52px;
-  color: #7df9ff;
+  color: #ff00ff;
   letter-spacing: 0.1em;
-  text-shadow: 0 0 24px #7df9ff99;
+  text-shadow: 0 0 30px #ff00ff, 0 0 60px #ff00ff66;
 }
 
 #overlay p { font-size: 18px; color: #aaa; }
@@ -66,15 +66,17 @@ canvas { display: block; background: #05050f; border-radius: 4px; }
   font-size: 16px;
   font-family: inherit;
   background: transparent;
-  color: #7df9ff;
-  border: 2px solid #7df9ff;
+  color: #ff00ff;
+  border: 2px solid #ff00ff;
   border-radius: 4px;
   cursor: pointer;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  text-shadow: 0 0 8px #ff00ff;
+  box-shadow: 0 0 12px #ff00ff44;
 }
 
-#overlay button:hover { background: #7df9ff; color: #05050f; }
+#overlay button:hover { background: #ff00ff; color: #030010; text-shadow: none; }
 </style>
 </head>
 <body>
@@ -112,12 +114,12 @@ const COLS = 12, ROWS = 6, BGAP = 5, BTOP = 60, BH = 22;
 const BW = (W - (COLS + 1) * BGAP) / COLS;
 
 const ROW_STYLE = [
-  { fill:'#ff4466', pts:7 },
-  { fill:'#ff7733', pts:5 },
-  { fill:'#ffdd00', pts:4 },
-  { fill:'#44ff88', pts:3 },
-  { fill:'#33aaff', pts:2 },
-  { fill:'#aa66ff', pts:1 },
+  { fill:'#ff00ff', pts:7 },  // hot magenta
+  { fill:'#ff0080', pts:5 },  // hot pink
+  { fill:'#ff3300', pts:4 },  // neon red-orange
+  { fill:'#00ffcc', pts:3 },  // neon mint
+  { fill:'#00ccff', pts:2 },  // electric blue
+  { fill:'#aaff00', pts:1 },  // neon lime
 ];
 
 // ── State ──────────────────────────────────────────────────────
@@ -277,7 +279,7 @@ function draw() {
     if (!b.alive) continue;
     const s = ROW_STYLE[b.row];
     const cracked = b.need > 1 && b.hits > 0;
-    ctx.shadowColor = s.fill + '88'; ctx.shadowBlur = 6;
+    ctx.shadowColor = s.fill; ctx.shadowBlur = 14;
     ctx.fillStyle = cracked ? '#666' : s.fill;
     ctx.fillRect(b.x, b.y, BW, BH);
     ctx.shadowBlur = 0;
@@ -293,17 +295,17 @@ function draw() {
 
   // Paddle
   const pg = ctx.createLinearGradient(paddle.x, paddle.y, paddle.x, paddle.y+PH);
-  pg.addColorStop(0, '#99eeff'); pg.addColorStop(1, '#3399cc');
+  pg.addColorStop(0, '#ff66ff'); pg.addColorStop(1, '#cc00cc');
   ctx.fillStyle = pg;
-  ctx.shadowColor = '#7df9ff'; ctx.shadowBlur = 10;
+  ctx.shadowColor = '#ff00ff'; ctx.shadowBlur = 20;
   ctx.beginPath(); ctx.roundRect(paddle.x, paddle.y, PW, PH, 4); ctx.fill();
   ctx.shadowBlur = 0;
 
   // Ball
   const bg = ctx.createRadialGradient(ball.x-2, ball.y-2, 1, ball.x, ball.y, BR);
-  bg.addColorStop(0, '#fff'); bg.addColorStop(1, '#7df9ff');
+  bg.addColorStop(0, '#fff'); bg.addColorStop(1, '#00ffcc');
   ctx.fillStyle = bg;
-  ctx.shadowColor = '#7df9ff'; ctx.shadowBlur = 14;
+  ctx.shadowColor = '#00ffcc'; ctx.shadowBlur = 20;
   ctx.beginPath(); ctx.arc(ball.x, ball.y, BR, 0, Math.PI*2); ctx.fill();
   ctx.shadowBlur = 0;
 
